@@ -1,10 +1,10 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { MongoClient, ObjectId } from "mongodb";
 
-const url = "mongodb://localhost:27017";
-const client = new MongoClient(url);
-const dbName = "szukajprawnikadb";
-const collectionName = "userFilesCollection";
+export const urlOfDb = "mongodb://localhost:27017";
+export const client = new MongoClient(urlOfDb);
+export const dbName = "szukajprawnikadb";
+export const collectionName = "userFilesCollection";
 
 export const insertFile = async (file: {
   filename: string;

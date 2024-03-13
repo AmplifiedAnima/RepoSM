@@ -1,17 +1,12 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import http from "http";
-import bodyParser from "body-parser";
-import compression from "compression";
-import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import db from "./server/database";
-import {
-  downloadFilesForUser,
-  getFilesByUserId,
-  multipleFilesFileUploadController,
-} from "./controllers/fileUploadServiceMultipleFiles.controller";
 import path from "path";
+import { GetFilesByUserIdController } from "./controllers/getFilesByUserId.controller";
+import { DownloadFilesForUserController } from "./controllers/downloadFilesForUser.controller";
+import { MultipleFilesFileUploadController } from "./controllers/multipleFilesFileUpload.controller";
 
 dotenv.config();
 
@@ -29,11 +24,14 @@ app.get("/", (req: Request, res: Response) => {
   res.json("this is the spine of app");
 });
 
-app.get("/files/:userId", getFilesByUserId);
+app.get("/files/:userId", GetFilesByUserIdController.getFiles);
 
-app.get("/download/:userId/:filename", downloadFilesForUser);
+app.get(
+  "/download/:userId/:filename",
+  DownloadFilesForUserController.downloadFiles
+);
 
-app.post("/upload-files", multipleFilesFileUploadController);
+app.post("/upload-files", MultipleFilesFileUploadController.uploadFiles);
 
 db();
 

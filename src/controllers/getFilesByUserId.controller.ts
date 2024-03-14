@@ -1,13 +1,17 @@
 import { Request, Response } from "express";
 import { collectionName, dbName, urlOfDb } from "../server/databaseCredentials";
-import FileRetrieval from "../server/databaseMethods/fileRetrieval";
+import FileOperations from "../server/databaseMethods/databaseMethods";
 
 export class GetFilesByUserIdController {
   static async getFiles(req: Request, res: Response) {
     try {
       const userId = req.params.userId;
-      const filesRetrieval = new FileRetrieval(urlOfDb, dbName, collectionName);
-      const files = await filesRetrieval.findFilesByUserId(userId);
+      const filesOperations = new FileOperations(
+        urlOfDb,
+        dbName,
+        collectionName
+      );
+      const files = await filesOperations.findFilesByUserId(userId);
 
       if (!files) {
         return res

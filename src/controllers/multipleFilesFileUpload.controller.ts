@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { collectionName, dbName, urlOfDb } from "../server/databaseCredentials";
 import { generateFileUrlForDatabase, upload } from "../utils/multer.utils";
-import FileInsertion from "../server/databaseMethods/fileInsertion";
+import FileOperations from "../server/databaseMethods/databaseMethods";
 
 export class MultipleFilesFileUploadController {
   static async uploadFiles(req: Request, res: Response) {
@@ -16,7 +16,11 @@ export class MultipleFilesFileUploadController {
         return res.status(400).json({ message: "No files uploaded." });
       }
 
-      const fileInsertion = new FileInsertion(urlOfDb, dbName, collectionName);
+      const fileOperations = new FileOperations(
+        urlOfDb,
+        dbName,
+        collectionName
+      );
 
       try {
         const filesData = req.files as Express.Multer.File[];
@@ -32,7 +36,7 @@ export class MultipleFilesFileUploadController {
 
         const savedFiles = [];
         for (const fileToSave of filesToSave) {
-          const result = await fileInsertion.insertFile(fileToSave);
+          const result = await fileOperations.insertFile(fileToSave);
           savedFiles.push(result);
         }
 

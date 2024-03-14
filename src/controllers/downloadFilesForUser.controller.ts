@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { collectionName, dbName, urlOfDb } from "../server/databaseCredentials";
 import path from "path";
 import fs from "fs";
-import FileDownload from "../server/databaseMethods/fileDownload";
+import FileDownload from "../server/databaseMethods/databaseMethods";
+import FileOperations from "../server/databaseMethods/databaseMethods";
 
 export class DownloadFilesForUserController {
   static async downloadFiles(req: Request, res: Response) {
@@ -10,9 +11,9 @@ export class DownloadFilesForUserController {
       const userId = req.params.userId;
       const fileName = req.params.filename;
 
-      const fileDownload = new FileDownload(urlOfDb, dbName, collectionName);
+      const fileOperations = new FileOperations(urlOfDb, dbName, collectionName);
 
-      const file = await fileDownload.findOneFileToDownload(userId, fileName);
+      const file = await fileOperations.findOneFileToDownload(userId, fileName);
 
       if (!file) {
         return res.status(404).json({ message: "File not found" });
